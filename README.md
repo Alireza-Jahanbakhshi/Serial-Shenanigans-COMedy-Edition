@@ -2,6 +2,10 @@
 
 # Serial_Shenanigans: COMedy Edition
 
+<p align="center">
+  <img src="icon.png" width="600" height="600">
+</p>
+
 Welcome to **Serial_Shenanigans: COMedy Edition** — a quirky, fun-filled project that brings serial communication to life with a comedic twist! This app lets you interact with your serial ports in a way you've never seen before, complete with playful sounds and humor.
 
 If you've ever wanted to play around with serial communication and have a good laugh while you're at it, this is your ticket.
@@ -29,6 +33,16 @@ The project directory includes:
 
 ------
 
+## 📸 Screenshots
+
+Here's a sneak peek at how the app looks:
+
+<p align="center">
+  <img src="screenshot.png">
+</p>
+
+------
+
 ## 💻 Getting Started
 
 ### Prerequisites
@@ -44,17 +58,13 @@ Before running the project, you'll need:
 1. Clone this repo to your local machine:
 
    ```
-   bashCopy codegit clone https://github.com/your-username/Serial_Shenanigans-COMedy_Edition.git
+   git clone https://github.com/your-username/Serial_Shenanigans-COMedy_Edition.git
    cd Serial_Shenanigans-COMedy_Edition
    ```
 
 2. Run the installer to set up everything automatically:
 
    ```
-   bash
-   
-   
-   Copy code
    ./install.sh
    ```
 
@@ -65,10 +75,6 @@ Before running the project, you'll need:
 To launch the app:
 
 ```
-bash
-
-
-Copy code
 python main.py
 ```
 
@@ -85,7 +91,7 @@ A window will appear where you can:
 Here’s a peek at what makes this project tick:
 
 ```
-pythonCopy codeimport ttkbootstrap as ttk
+import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import serial
 import serial.tools.list_ports
