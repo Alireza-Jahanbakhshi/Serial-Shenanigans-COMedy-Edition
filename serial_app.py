@@ -81,18 +81,31 @@ class SerialApp:
         self.author_label.pack(pady=10)
         self.author_label.bind("<Button-1>", self.open_github)
 
+        # Sound Toggle Checkbox
+        self.sound_enabled = ttk.BooleanVar(value=True)  # Default: Sounds enabled
+        sound_toggle = ttk.Checkbutton(
+            config_frame,
+            text="Enable Sounds",
+            variable=self.sound_enabled,
+            bootstyle="round-toggle-success",
+        )
+        sound_toggle.grid(row=3, column=0, columnspan=3, pady=5)
+
+
     def open_github(self, event):
         """Open GitHub profile when clicked."""
         import webbrowser
         webbrowser.open("https://github.com/Alireza-Jahanbakhshi")
 
     def play_sound(self, file_path=None):
-        """Play a sound when connecting/disconnecting."""
-        if file_path:
-            winsound.PlaySound(file_path, winsound.SND_FILENAME)
-        else:
-            # Play a default sound if no file is provided
-            winsound.Beep(1000, 500)
+        """Play a sound when connecting/disconnecting, if enabled."""
+        if self.sound_enabled.get():  # Play sound only if enabled
+            if file_path:
+                winsound.PlaySound(file_path, winsound.SND_FILENAME)
+            else:
+                # Play a default sound if no file is provided
+                winsound.Beep(1000, 500)
+
 
     def refresh_ports(self):
         """Refresh available COM ports."""
@@ -111,6 +124,7 @@ class SerialApp:
             self.serial_port.close()
             self.serial_port = None
             self.connect_button.config(text="Connect", bootstyle="success")
+            self.root.update_idletasks()  # Ensure GUI updates before playing the sound
             self.play_sound("disconnect_sound.wav")  # Add sound for disconnection
         else:
             try:
@@ -124,9 +138,11 @@ class SerialApp:
                 self.read_thread = threading.Thread(target=self.read_from_serial_thread, daemon=True)
                 self.read_thread.start()
                 self.connect_button.config(text="Disconnect", bootstyle="danger")
+                self.root.update_idletasks()  # Ensure GUI updates before playing the sound
                 self.play_sound("connect_sound.wav")  # Add sound for connection
             except serial.SerialException as e:
                 ttk.Messagebox.show_error("Error", str(e))
+
 
     def read_from_serial_thread(self):
         """Read data from the serial port in a separate thread."""
