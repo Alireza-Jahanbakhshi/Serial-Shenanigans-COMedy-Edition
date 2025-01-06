@@ -74,7 +74,7 @@ Before running the project, you'll need:
 To launch the app:
 
 ```bash
-python main.py
+python serial_app.py
 ```
 
 A window will appear where you can:
