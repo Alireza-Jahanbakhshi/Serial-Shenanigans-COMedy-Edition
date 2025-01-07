@@ -3,24 +3,23 @@ from ttkbootstrap.constants import *
 import serial
 import serial.tools.list_ports
 import threading
-import winsound
+import winsound  
 
 class SerialApp:
     def __init__(self, root):
-        """Initialize the SerialApp GUI and its components."""
         self.root = root
         self.root.title("Serial Shenanigans: COMedy Edition")
         self.root.resizable(False, False)
-        self.serial_port = None  # Serial port object
-        self.read_thread = None  # Thread for reading serial data
-        self.stop_thread = threading.Event()  # Event to stop threads
+        self.serial_port = None # Serial port object
+        self.read_thread = None # Thread for reading serial data
+        self.stop_thread = threading.Event() # Event to stop threads
 
         # Set window icon (optional)
         icon_image = ttk.PhotoImage(file="icon.png")
         root.tk.call("wm", "iconphoto", root._w, icon_image)
 
         # Define the sound enabled variable
-        self.sound_enabled = ttk.BooleanVar(value=True)  # Default sound state is enabled
+        self.sound_enabled = ttk.BooleanVar(value=True)  # Default sound state as enabled
 
         # Frame for Port and Baudrate Configuration
         config_frame = ttk.Labelframe(root, text="Configuration", padding=10)
@@ -39,9 +38,8 @@ class SerialApp:
 
         # Baudrate Selection
         ttk.Label(config_frame, text="Baudrate:").grid(row=1, column=0, padx=5, pady=5)
-        self.baud_var = ttk.StringVar(value="9600")
+        self.baud_var = ttk.StringVar(value="115200")
         baud_menu = ttk.Combobox(config_frame, textvariable=self.baud_var, state="readonly")
-        # Include all standard baud rates
         baud_menu['values'] = ["110", "300", "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "230400", "460800", "921600"]
         baud_menu.grid(row=1, column=1, padx=5, pady=5)
 
@@ -86,17 +84,20 @@ class SerialApp:
         self.author_label.bind("<Button-1>", self.open_github)
 
         # Sound Toggle Checkbox
+        # Bind this new method to the checkbutton
         sound_toggle = ttk.Checkbutton(
             config_frame,
             text="Enable Sounds",
             variable=self.sound_enabled,
-            command=self.toggle_sound,
+            command=self.toggle_sound,  # Add the toggle method
             bootstyle="round-toggle-success",
         )
         sound_toggle.grid(row=3, column=0, columnspan=3, pady=5)
 
+
+
     def open_github(self, event):
-        """Open GitHub profile when the label is clicked."""
+        """Open GitHub profile when clicked."""
         import webbrowser
         webbrowser.open("https://github.com/Alireza-Jahanbakhshi")
 
@@ -106,10 +107,10 @@ class SerialApp:
             if file_path:
                 winsound.PlaySound(file_path, winsound.SND_FILENAME | winsound.SND_ASYNC)
             else:
-                # Optionally play a default beep if no file is provided
+                # Optionally play a default beep if no file is provided and sound is enabled
                 winsound.Beep(1000, 500)
         else:
-            # Stop any currently playing sounds
+            # Stop any currently playing sounds if sound is disabled
             winsound.PlaySound(None, winsound.SND_ASYNC)
 
     def toggle_sound(self):
@@ -118,16 +119,16 @@ class SerialApp:
             self.play_sound()  # This will stop any sounds playing
 
     def refresh_ports(self):
-        """Refresh the list of available COM ports."""
+        """Refresh available COM ports."""
         ports = serial.tools.list_ports.comports()
         self.port_menu['values'] = [port.device for port in ports]
         if ports:
-            self.port_var.set(ports[0].device)  # Automatically select the first port
+            self.port_var.set(ports[0].device)
 
     def connect_serial(self):
         """Connect or disconnect the serial port."""
         if self.serial_port and self.serial_port.is_open:
-            # Disconnect the serial port
+            # Disconnect
             self.stop_thread.set()
             if self.read_thread:
                 self.read_thread.join()
@@ -135,10 +136,10 @@ class SerialApp:
             self.serial_port = None
             self.connect_button.config(text="Connect", bootstyle="success")
             self.root.update_idletasks()  # Ensure GUI updates before playing the sound
-            self.play_sound("disconnect_sound.wav")  # Play disconnection sound
+            self.play_sound("disconnect_sound.wav")  # Add sound for disconnection
         else:
             try:
-                # Connect to the serial port
+                # Connect
                 self.serial_port = serial.Serial(
                     port=self.port_var.get(),
                     baudrate=int(self.baud_var.get()),
@@ -149,9 +150,10 @@ class SerialApp:
                 self.read_thread.start()
                 self.connect_button.config(text="Disconnect", bootstyle="danger")
                 self.root.update_idletasks()  # Ensure GUI updates before playing the sound
-                self.play_sound("connect_sound.wav")  # Play connection sound
+                self.play_sound("connect_sound.wav")  # Add sound for connection
             except serial.SerialException as e:
                 ttk.Messagebox.show_error("Error", str(e))
+
 
     def read_from_serial_thread(self):
         """Read data from the serial port in a separate thread."""
@@ -200,6 +202,7 @@ class SerialApp:
         self.receive_text.config(state=NORMAL)
         self.receive_text.delete(1.0, END)
         self.receive_text.config(state=DISABLED)
+
 
 if __name__ == "__main__":
     root = ttk.Window(themename="vapor")
