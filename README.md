@@ -12,12 +12,48 @@ If you've ever wanted to play around with serial communication and have a good l
 
 ## 🚀 Features
 
-- **COM Port Detection**: Automatically detect available serial ports on your machine.
-- **Baudrate Selection**: Choose from a comprehensive list of standard baud rates.
-- **Connect and Communicate**: Establish a connection to your serial port and start the fun.
-- **Comedic Sounds**: Play system sounds and enjoy some lighthearted humor while you work.
-- **Completely GUI-Driven**: No command line necessary. Just point, click, and laugh.
-- **Real-Time Serial Communication**: View and send data seamlessly.
+### 1. Serial Port Configuration
+- **Dynamic COM Port Detection**: Automatically detects and lists available serial ports on your system.
+- **Refresh Option**: Updates the COM port list in real-time.
+- **Customizable Baud Rate Settings**: Select from a comprehensive list of standard baud rates.
+
+### 2. Connection Management
+- **Connect/Disconnect Functionality**: Seamlessly establish or terminate connections to the selected COM port.
+- **Advanced Serial Settings**:
+  - **Parity Configuration**: Supports None, Odd, Even, Mark, and Space.
+  - **Adjustable Data Bits**: Choose from 5, 6, 7, or 8 data bits.
+  - **Flexible Stop Bits Options**: Configure to 1, 1.5, or 2 stop bits.
+  - **Flow Control Mechanisms**: Supports None, XON/XOFF, RTS/CTS, and DSR/DTR.
+
+### 3. Data Management and Processing
+- **Real-Time Data Monitoring**: View incoming data in a dedicated text area.
+- **Timestamp Integration**: Toggle timestamps to include date and time with each received message.
+- **Data Export Options**:
+  - Export received data to `.txt`, `.csv`, or `.json` formats.
+- **Clear Display**: Instantly clear the data display area with a single click.
+
+### 4. Message Transmission
+- **Custom Message Input**: Enter and send user-defined messages.
+- **End-of-Line Character Options**:
+  - Predefined choices: `<cr>`, `<lf>`, `<cr><lf>`, and `<none>`.
+  - **Custom EOL Definition**: Option to define and use custom EOL characters.
+
+### 5. User Experience Enhancements
+- **Sound Feedback**:
+  - Notification sounds for connection, disconnection, and other key actions.
+  - Easily toggle sound effects on or off.
+- **Modern GUI Design**:
+  - Built with ttkbootstrap for a professional and responsive user interface.
+  - Compact layout with enhanced usability.
+  - Scrollable text area for managing extensive data streams.
+
+### 6. Error Handling and Notifications
+- **Connection Error Messages**: Provides clear feedback for issues like unavailable ports or connection failures.
+- **Export Failures**: Alerts the user if data export encounters errors.
+
+### 7. Developer-Friendly Features
+- **Author Attribution and GitHub Integration**:
+  - Quick access to the author’s GitHub profile for further collaboration.
 
 ---
 
@@ -46,11 +82,15 @@ Here's a sneak peek at how the app looks:
 
 ### Prerequisites
 
-Before running the project, you'll need:
+Before running the project, ensure you have the following installed:
 
-- Python 3.x
-- `ttkbootstrap` library (for the fancy GUI)
-- `pyserial` library (for serial communication)
+1. **Python**: Version 3.x is required.
+2. **Dependencies**:
+   - `ttkbootstrap`: For enhanced GUI components and themes.
+   - `pyserial`: To enable serial communication with COM ports.
+   - `winsound` *(Windows-only)*: For sound notifications.
+   - `json` *(built-in)*: For handling data serialization.
+   - `datetime` *(built-in)*: For generating timestamps.
 
 ### Installation
 
@@ -109,17 +149,6 @@ class SerialApp:
         # Set window icon (optional)
         icon_image = ttk.PhotoImage(file="icon.png")
         root.tk.call("wm", "iconphoto", root._w, icon_image)
-
-        # Frame for Port and Baudrate Configuration
-        config_frame = ttk.Labelframe(root, text="Configuration", padding=10)
-        config_frame.pack(fill=X, padx=10, pady=10)
-
-        # COM Port Selection
-        ttk.Label(config_frame, text="COM Port:").grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
-        self.port_var = ttk.StringVar()
-        self.port_menu = ttk.Combobox(config_frame, textvariable=self.port_var, state="readonly")
-        self.port_menu.grid(row=0, column=1, padx=5, pady=5, sticky='nsew')
-        self.refresh_ports()
 ```
 
 ---
